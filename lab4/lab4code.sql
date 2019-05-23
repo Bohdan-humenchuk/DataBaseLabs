@@ -167,9 +167,13 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+##########################################
 
-##show tables;
-##describe size; 
+show tables;
+##describe book; 
+##describe customer; 
+##describe printer;
+##describe performer;
 
 ##show index from size;
 
@@ -183,3 +187,39 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 ##ALTER TABLE size
 ##DROP COLUMN price,
 ##MODIFY COLUMN size int(22) NULL; 
+
+insert into customer 
+values (null, "Petro", "Savchyk", "0959966842", "petro_savchuk@gmail.com", "2014.12.10");
+
+insert into customer 
+values (null, "Oleksandr", "Vishchyk", "0959977842", "aleks_vishchuk@gmail.com", "2012.8.15"), 
+(null, "Vitaliy", "Horishniy", "098977242", "vitalik_horishniy@gmail.com", "2000.3.17");
+
+insert into performer
+values (1, "Vasiliy", "2014.12.10", "vasya_homilka@gmail.com");
+
+insert into printer  
+values (null, 1, 1);
+
+##select * from customer; 
+##select * from performer; 
+##select * from printer; 
+
+insert into book 
+values (NULL, "book_1", 1, 1, 10, "world_man1", 1), 
+(NULL, "book_2", 1, 1, 10, "world_man2", 1), 
+(NULL, "book_3", 1, 1, 10, "world_man3", 1);
+	
+LOAD DATA INFILE 'Q:/lab4data.txt' INTO TABLE performer LINES
+TERMINATED BY '\r\n';
+
+##select * from performer
+
+UPDATE performer SET name = "Olexiy"
+WHERE name="Ivan";
+
+
+DELETE FROM performer
+WHERE (birth_date<"1990-01-01");
+
+select * from performer
