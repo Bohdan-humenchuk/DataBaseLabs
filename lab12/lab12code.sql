@@ -169,17 +169,19 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 #########################################################################
-
+insert into performer values (5, "Volodymir", "2000-10-20", "volodyamort@gmail.com");
+insert into book values (11, "test_book_lab_12", 1, 1, 13, "Volodymir", 5);
+select * from performer;
 select * from book;
 
+drop trigger performer_delete; 
+create trigger performer_delete before delete 
+on performer for each row 
+update book set performer_idperformer = OLD.idperformer - 1, 
+performer = (select name from performer where idperformer = OLD.idperformer - 1)
+where performer_idperformer = OLD.idperformer;  
 
-
-select performer.name as Pname, sum(book.amount) as Numbook 
-from performer inner join book 
-on book.performer_idperformer = performer.idperformer 
-group by performer.name with rollup;
-
-select performer.name as Pname, avg(distinct book.amount) as Numbook 
-from performer inner join book 
-on book.performer_idperformer = performer.idperformer 
-group by performer.name;
+delete from performer where idperformer = 5;
+select * from performer;  
+select * from book; 
+delete from book where idbooks = 11; 

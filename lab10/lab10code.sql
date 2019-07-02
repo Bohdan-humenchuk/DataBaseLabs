@@ -168,18 +168,29 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
-#########################################################################
+show tables;
+select * from performer;
 
-select * from book;
+DROP PROCEDURE `mydb`.`search_book_count_by_customer`;
 
+delimiter //
+create procedure search_book_count_by_customer (in performer varchar(45), in customer varchar(45)) 
+begin
+declare error_out varchar(45); 
+set error_out = "no such customer or performer"; 
+if (performer = "Vasiliy" and customer = "Ivan") then 
+	begin 
+    create table if not exists mydb.stats (Customer varchar(45), Amount int); 
+    truncate mydb.stats; 
+    insert into mydb.stats select customer.name as Customer, count(book.performer_idperformer) as Amount 
+    from (performer inner join book) inner join customer 
+    on book.performer_idperformer = performer.idperformer and book.customer_idcustomer = customer.idcustomer 
+    where performer = performer.name and customer = customer.name; 
+    end; 
+	else select error_out; 
+	end if; 
+end
+//delimiter ; 
 
-
-select performer.name as Pname, sum(book.amount) as Numbook 
-from performer inner join book 
-on book.performer_idperformer = performer.idperformer 
-group by performer.name with rollup;
-
-select performer.name as Pname, avg(distinct book.amount) as Numbook 
-from performer inner join book 
-on book.performer_idperformer = performer.idperformer 
-group by performer.name;
+call search_book_count_by_customer ("Mykola", "Ivan"); 
+select * from stats;

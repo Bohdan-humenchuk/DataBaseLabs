@@ -169,17 +169,11 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 #########################################################################
+select * from performer;
 
-select * from book;
+start transaction; 
+insert into performer values (5, "Volodymir", "2000-10-20", "volodyamort@gmail.com");
+insert into performer values (6, "Sviatoslav", "1991-04-04", "sviatik_bos@gmail.com"); 
+commit; 
 
 
-
-select performer.name as Pname, sum(book.amount) as Numbook 
-from performer inner join book 
-on book.performer_idperformer = performer.idperformer 
-group by performer.name with rollup;
-
-select performer.name as Pname, avg(distinct book.amount) as Numbook 
-from performer inner join book 
-on book.performer_idperformer = performer.idperformer 
-group by performer.name;
